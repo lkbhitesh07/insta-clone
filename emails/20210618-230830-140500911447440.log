@@ -1,0 +1,26 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Password reset on localhost:8000
+From: webmaster@localhost
+To: lkbhitesh07@gmail.com
+Date: Fri, 18 Jun 2021 23:08:30 -0000
+Message-ID: 
+ <162405771066.96532.9363865469045746363@lkbhitesh07-HP-Laptop-15-da0077tx>
+
+
+You're receiving this email because you requested a password reset for your user account at localhost:8000.
+
+Please go to the following page and choose a new password:
+
+http://localhost:8000/password/reset/confirm/Mg/aogoa6-06c1ae1ecbf1a088155a7c9a2fbae4c4
+
+Your username, in case you’ve forgotten: lkbhitesh07@gmail.com
+
+Thanks for using our site!
+
+The localhost:8000 team
+
+
+
+-------------------------------------------------------------------------------

@@ -128,3 +128,11 @@ AUTH_USER_MODEL = 'user.User'
 LOGIN_URL = 'signin_view' # The reason here is we wanted to access feed only if the user is authenticated, so we used login_required decorator, now what it does is
 # it will automatically redirect you to authentication page, so django is smart he thought according to his default authentication system it will move you towards
 # this url http://127.0.0.1:8000/accounts/login/?next=/feed/ which will give us 404 error as we want to move user to signin page.
+
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com' #email service
+EMAIL_HOST_USER = 'lkbhitesh07@gmail.com'
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend' #This backend is use for testing purpose, this will send the email locally and we can save it, this will show us the format.
+EMAIL_FILE_PATH = BASE_DIR / 'emails'
