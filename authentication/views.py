@@ -1,11 +1,14 @@
+from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.http import HttpResponse
 from authentication.forms import UserForm
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
+from django.contrib.auth import authenticate, login, logout, get_user_model
+# from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
 
 # Create your views here.
+
+User = get_user_model()
 
 def home(request):
     return HttpResponse("Home")
@@ -19,8 +22,15 @@ class SignInView(View):
         return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
-        email = request.POST.get('email')
+        email_username = request.POST.get('email_username')
         password = request.POST.get('password')
+
+        try:
+            user_obj = User.objects.get(username=email_username)
+            email = user_obj.email
+        except:
+            email = email_username
+
         user = authenticate(request, email=email, password=password) #authenticate function will tell if it's in our database or not.
 
         if user is None:
@@ -53,18 +63,22 @@ class SignOutView(View):
         logout(request)
         return redirect('signin_view')
 
-class PrView(PasswordResetView):
-    email_template_name = 'authentication/password_reset_email.html' #default values we can change to change the template of email
-    template_name = 'authentication/password_reset.html'
+# Method-1 to use password reset - Did for my learning purpose
 
-class PrCView(PasswordResetConfirmView):
-    template_name = 'authentication/password_reset_confirm.html'
+# class PrView(PasswordResetView):
+#     email_template_name = 'authentication/password_reset_email.html'      #default values we can change to change the template of email
+#     template_name = 'authentication/password_reset.html'
 
-class PrDView(PasswordResetDoneView):
-    template_name = 'authentication/password_reset_done.html' #This view also passes the form attribute with itself, which means the default one which django have.
-    #you can see it by simply writing {{ form }} at the template file
-    # In template when we create the form it's important to have the 'name' part same as the django form which is passing by this view otherwise it will not validate
-    # and will not work
+# class PrCView(PasswordResetConfirmView):
+#     template_name = 'authentication/password_reset_confirm.html'
 
-class PrCView(PasswordResetCompleteView):
-    template_name = 'authentication/password_reset_complete.html'
+# class PrDView(PasswordResetDoneView):
+#     template_name = 'authentication/password_reset_done.html' 
+
+#     #This view also passes the form attribute with itself, which means the default one which django have.
+#     #you can see it by simply writing {{ form }} at the template file
+#     # In template when we create the form it's important to have the 'name' part same as the django form which is passing by this view otherwise it will not validate
+#     # and will not work
+
+# class PrCView(PasswordResetCompleteView):
+#     template_name = 'authentication/password_reset_complete.html'
