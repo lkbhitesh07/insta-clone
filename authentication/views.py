@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.http import HttpResponse
 from authentication.forms import UserForm
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 # from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
 
@@ -34,8 +35,11 @@ class SignInView(View):
         user = authenticate(request, email=email, password=password) #authenticate function will tell if it's in our database or not.
 
         if user is None:
-            return render(request, self.template_name, context={'messages': 'Invalid username or password'})
+            messages.error(request, 'Invalid username or password', extra_tags="error")
+            return render(request, self.template_name)
+
         login(request, user)# it will directly login the user
+        messages.success(request, 'Welcome to instagram', extra_tags="success")
         return redirect('home_feed')
 
 class SignUpView(View):
