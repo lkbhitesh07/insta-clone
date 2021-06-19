@@ -19,6 +19,11 @@
                     <img src="{% static 'img/instalogo.png' %}" class="insta__logo mt-4 mb-3 mx-auto">
                     <div class="signin">
                         <div class="signin__form mb-3">
+                            {% if messages %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ messages }}
+                            </div>
+                            {% endif %}
                             <form method="POST">
                                 {% csrf_token %}
                                 <div class="my-1 form__input">

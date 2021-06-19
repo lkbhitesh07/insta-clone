@@ -28,13 +28,13 @@ class SignInView(View):
         try:
             user_obj = User.objects.get(username=email_username)
             email = user_obj.email
-        except:
+        except Exception as e:
             email = email_username
 
         user = authenticate(request, email=email, password=password) #authenticate function will tell if it's in our database or not.
 
         if user is None:
-            return render(request, self.template_name)
+            return render(request, self.template_name, context={'messages': 'Invalid username or password'})
         login(request, user)# it will directly login the user
         return redirect('home_feed')
 
