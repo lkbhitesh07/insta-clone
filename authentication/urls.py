@@ -18,7 +18,7 @@ urlpatterns = [
     path('password/reset/', PasswordResetView.as_view(
         email_template_name = 'authentication/password_reset_email.html', #default values we can change to change the template of email
         template_name = 'authentication/password_reset.html'
-    ), name='password_reset'),
+    ), name='password_reset'), #name are also default that we have to enter.
 
     path('password/reset/confirm/<uidb64>/<token>', PasswordResetConfirmView.as_view(
         template_name = 'authentication/password_reset_confirm.html'

@@ -19,7 +19,7 @@ class SignInView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('home_feed')
+            return redirect('home_feed_view')
         return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
@@ -40,7 +40,7 @@ class SignInView(View):
 
         login(request, user)# it will directly login the user
         messages.success(request, 'Welcome to instagram', extra_tags="success")
-        return redirect('home_feed')
+        return redirect('home_feed_view')
 
 class SignUpView(View):
     template_name = 'authentication/signup.html'
@@ -48,14 +48,14 @@ class SignUpView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('home_feed')
+            return redirect('home_feed_view')
         return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if(form.is_valid()):
             form.save()
-            return redirect('home_feed')
+            return redirect('home_feed_view')
 
         context = {'form': form}
 

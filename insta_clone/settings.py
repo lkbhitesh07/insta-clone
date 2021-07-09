@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'authentication.apps.AuthenticationConfig',
     'core.apps.CoreConfig',
     'user.apps.UserConfig',
-    'common.apps.CommonConfig',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'crum.CurrentRequestUserMiddleware',
 ]
 
 ROOT_URLCONF = 'insta_clone.urls'
@@ -58,7 +58,7 @@ ROOT_URLCONF = 'insta_clone.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/'templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,7 +122,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR/'static_files',]
 MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media' #By defult django has capability to pass static files but for media we have to write logic, this is the logic to have profile picture.
 
 AUTH_USER_MODEL = 'user.User'
 LOGIN_URL = 'signin_view' # The reason here is we wanted to access feed only if the user is authenticated, so we used login_required decorator, now what it does is
