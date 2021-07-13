@@ -23,3 +23,15 @@ class UserEditForm(forms.ModelForm):
             'is_private_account': 'Do you want to make your account private ?',
             'phone_number': 'Phone'
         } #labels to give name in particular
+
+    # To add bootstrap class all at once to form fields
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields:
+            if field == 'picture':
+                self.fields[field].widget.attrs.update({'class': 'form-control-file'}) #IT will give us the html to which we can apply bootstrap
+            elif field == 'is_private_account':
+                self.fields[field].widget.attrs.update({'class': 'form-check-input'})
+            else:
+                self.fields[field].widget.attrs.update({'class': 'form-control form-control-sm'})

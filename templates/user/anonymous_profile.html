@@ -13,7 +13,7 @@
 
                     <!-- User's Profile picture -->
                     {% if user.picture %}
-                        <a href="profile_edit_view">
+                        <a>
                             <img src="{{ request.user.picture.url }}" class="profile__pic" width="200" height="200">
                         </a>
                     {% else %}
@@ -30,22 +30,22 @@
                     <!-- Username -->
                     <h2 class="username__text mr-4">{{ user.username }}</h2>
 
-                    <!-- If follws then this -->
+                    {% if not follows_this_user %}
                         <!-- Follow button -->
-                        <form method="POST" action="follow_done_view">
+                        <form method="POST" action="{% url 'follow_done_view' %}">
                             {% csrf_token %}
                             <input type="number" name="followed_user_id" hidden value="{{ user.pk }}">
                             <button class="px-2 btn btn-sm btn-primary mx-2" type="submit">Follow</button>
                         </form>
 
-                    <!-- else this -->
+                    {% else %}
                         <!-- Unfollow button -->
-                        <form method="POST" action="unfollow_done_view">
+                        <form method="POST" action="{% url 'unfollow_done_view' %}">
                             {% csrf_token %}
                             <input type="number" name="unfollowed_user_id" hidden value="{{ user.pk }}">
                             <button class="px-2 btn btn-sm btn-success mx-2" type="submit">Unfollow</button>
                         </form>
-
+                    {% endif %}
                 </div>
 
                 <div class="row userprofile__row__stats py-2">
@@ -61,7 +61,7 @@
                         <strong>
 
                         <!-- total followers count -->
-                        25
+                        {{ user.followers_count }}
                         </strong> followers
 
                     </span>
@@ -69,26 +69,26 @@
                         <strong>
 
                         <!-- total following count -->
-                        30
+                        {{ user.following_count }}
                         </strong> following
 
                     </span>
                 </div>
                 <div class="row user__fullname py-2">
-                    <span>
+                    <span class="col-12 px-0">
                         <strong>{{ user.full_name }}</strong>
                     </span>
 
                     <!-- User's bio if any -->
                     {% if user.bio %}
-                        <span>
+                        <span class="col-12 px-0">
                             {{ user.bio }}
                         </span>
                     {% endif %}
 
                     <!-- User's website if any -->
                     {% if user.website %}
-                        <span>
+                        <span class="col-12 px-0">
                             <strong><a href="{{ user.website }}">{{ user.website }}</a></strong>
                         </span>
                     {% endif %}

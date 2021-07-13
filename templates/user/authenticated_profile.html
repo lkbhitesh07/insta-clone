@@ -53,7 +53,7 @@
 
                         <!-- Total number of followers -->
                         <strong>
-                        20
+                        {{ request.user.followers_count }}
                         </strong> followers
 
                     </span>
@@ -61,7 +61,7 @@
 
                         <!-- Total followings count -->
                         <strong>
-                        200
+                            {{ request.user.following_count }}
                         </strong> following
 
                     </span>
@@ -219,7 +219,7 @@
 
                     <!-- Change password button -->
                     <div class="p-1 m-0 px-4">
-                        <a href="password_change_view" class="text-reset text-decoration-none">Change Password</a>
+                        <a href="{% url 'password_change_view' %}" class="text-reset text-decoration-none">Change Password</a>
                     </div>
                     <!-- Change password button end -->
 

@@ -19,7 +19,7 @@ class LikeModelAdmin(admin.ModelAdmin):
 
 class FollowModelAdmin(admin.ModelAdmin):
     model = Follow
-    list_display = ('user', 'follower', 'is_follow', 'created_on', 'updated_on')
+    list_display = ('user', 'followed', 'followed_on', 'updated_on')
 
 admin.site.register(Post, PostModelAdmin)
 admin.site.register(Comment, CommentModelAdmin)

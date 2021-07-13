@@ -3,9 +3,11 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.http import HttpResponse
 from authentication.forms import UserForm
+from django.urls import reverse_lazy #will help to generate the url from view name
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 # from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
+from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 
 # Create your views here.
 
@@ -86,3 +88,10 @@ class SignOutView(View):
 
 # class PrCView(PasswordResetCompleteView):
 #     template_name = 'authentication/password_reset_complete.html'
+
+class PWDchange(PasswordChangeView):
+    template_name = 'authentication/password_change.html'
+    success_url = reverse_lazy('password_change_done_view') #this will help django to generate url for this view, as we have changed the default value
+
+class PWDchangeDone(PasswordChangeDoneView):
+    template_name = 'authentication/password_change_done.html'

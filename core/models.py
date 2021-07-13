@@ -66,14 +66,13 @@ class Follow(models.Model):
     #Reverse access for Follow.user will clash with Follow.follower - This error we will get when we try to run without related_name, it's because here user, follower
     # are accessing the User table but when reverse will happen then we will get an error as when we access the table then a default name is their which is
     # 'The-table-we-are-accessing_set' , so when User will go for Follow table then for both user and follow the name will be Follow_set. That's why related_name is req.
-    user = models.ForeignKey(User, related_name='follow_user', on_delete=models.CASCADE, editable=False) #jisne follow kia
-    follower = models.ForeignKey(User, related_name='follow_follower', on_delete=models.CASCADE) #jisko follow kia
-    is_follow = models.BooleanField(default=True)
-    created_on = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(User, related_name='follow_follower', on_delete=models.CASCADE, editable=False) #jisne follow kia
+    followed = models.ForeignKey(User, related_name='follow_followed', on_delete=models.CASCADE) #jisko follow kia
+    followed_on = models.DateField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user} --> {self.follower}"
+        return f"{self.user} --> {self.followed}"
 
     def save(self, *args, **kwargs):
         user = get_current_user()

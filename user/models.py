@@ -32,3 +32,13 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    @property #instead of function we can use it as variable value
+    def followers_count(self):
+        count = self.follow_followed.count() #because we have to count how many times this user has occoured in followed portion
+        return count
+
+    @property
+    def following_count(self):
+        count = self.follow_follower.count()
+        return count

@@ -2,6 +2,7 @@ from django.urls import path
 from authentication.views import SignUpView, SignInView, SignOutView
 #from authentication.views import PrView, PrCView, PrDView, PrCView
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
+from authentication.views import PWDchange, PWDchangeDone
 
 urlpatterns = [
     path('', SignInView.as_view(), name='signin_view'),
@@ -31,4 +32,14 @@ urlpatterns = [
     path('password/reset/complete/', PasswordResetCompleteView.as_view(
         template_name = 'authentication/password_reset_complete.html'
     ), name='password_reset_complete'),
+
+    path('password/change/', 
+        PWDchange.as_view(), 
+        name='password_change_view'
+        ),
+    
+    path('password/change/done/', 
+        PWDchangeDone.as_view(), 
+        name='password_change_done_view'
+        ),
 ]
