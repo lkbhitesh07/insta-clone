@@ -61,7 +61,7 @@ class SignUpView(View):
 
         context = {'form': form}
 
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, context = context)
 
 class SignOutView(View):
 

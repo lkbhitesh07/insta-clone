@@ -2,20 +2,113 @@ from django.http import request
 from django.shortcuts import redirect, render
 from django.views.generic.base import TemplateView, View
 from django.contrib.auth import get_user_model
-from core.models import Follow
+from core.models import Comment, Follow, Post, Like
+from core.forms import PostCreationForm
 
 User = get_user_model()
 
 # Create your views here.
-class HomeView(TemplateView):
+class HomeView(View):
+    form_class = PostCreationForm
     template_name = 'core/feed.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        all_posts = Post.objects.all()
+        context = {'form': form, 'all_posts': all_posts}
+        return render(request, self.template_name, context=context)
+
+class PostCreateView(View):
+    template_name = 'core/feed.html'
+    form_class = PostCreationForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return redirect('home_feed_view')
+
+        else:
+            context = {'form': form}
+            return render(request, self.template_name, context=context)
+
+class PostDeleteView(View):
+    def post(self, request, *args, **kwargs):
+        post_id = kwargs.get('id')
+        try:
+            post_obj = Post.objects.get(pk=post_id)
+        except Exception as e:
+            pass
+        if request.user == post_obj.user:
+            post_obj.delete()
+
+        return redirect(request.META.get('HTTP_REFERER'))
+
+class PostDetailView(View):
+    template_name = 'core/post_detail.html'
+    def get(self, request, *args, **kwargs):
+        post_id = kwargs.get('id')
+        try:
+            post_obj = Post.objects.get(pk=post_id)
+        except:
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        try:
+            Like.objects.get(user=request.user, post_id=post_id)
+            liked_this_post = True
+        except Exception as e:
+            liked_this_post = False
+
+        context = {'post': post_obj, 'liked_this_post':liked_this_post}
+
+        return render(request, self.template_name, context=context)
+
+class PostLikeView(View):
+    def post(self, request, *args, **kwargs):
+        post_id = kwargs.get('id')
+        try:#in case user have already liked the picture
+            Like.objects.get(user=request.user, post_id=post_id) #instead of passing 'post' object we can pass post_id and django will automatically take it.
+        except:
+            Like.objects.create(user=request.user, post_id=post_id)
+        return redirect(request.META.get('HTTP_REFERER'))
+
+class PostUnlikeView(View):
+    def post(self, request, *args, **kwargs):
+        post_id = kwargs.get('id')
+        try:
+            like_obj = Like.objects.get(user=request.user, post_id=post_id)
+            like_obj.delete()
+        except:
+            pass
+        return redirect(request.META.get('HTTP_REFERER'))
+
+class PostCommentView(View):
+    def post(self, request, *args, **kwargs):
+        post_id = kwargs.get('id')
+        comment_text = request.POST.get('comment_text')
+        Comment.objects.create(post_id=post_id, text=comment_text)
+        return redirect(request.META.get('HTTP_REFERER'))
+
+class PostCommentDeleteView(View):
+    def post(self, request, *args, **kwargs):
+        comment_id = kwargs.get('id')
+        try:
+            comment_obj = Comment.objects.get(pk=comment_id)
+        except Exception as e:
+            pass
+        if request.user == comment_obj.user:
+            comment_obj.delete()
+
+        return redirect(request.META.get('HTTP_REFERER'))
+
 
 class FollowDoneView(View):
     def post(self, request, *args, **kwargs):
         followed_user_id = request.POST.get('followed_user_id')
         followed_user_obj = User.objects.get(pk=followed_user_id)
 
-        #we don't want to create same entry of same person following
+        #we don't want to create same entry of same person 'following'
         try:
             Follow.objects.get(user=request.user, followed=followed_user_obj)
         except Exception as e:

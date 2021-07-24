@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from user.forms import UserEditForm
 from django.contrib import messages
 from django.db.models import Q
+from core.models import Follow
 
 User = get_user_model()
 
@@ -23,15 +24,16 @@ class ProfileView(View):
 
         if(username == request.user.username):
             context = {'user' : user}
-            return render(request, self.template_name_auth, context)
+            return render(request, self.template_name_auth, context = context)
 
         else:
-            follows_this_user = False
-            for follower_user in request.user.follow_follower.all():
-                if user == follower_user.followed:
-                    follows_this_user = True
-            context = {'user' : user, 'follows_this_user': follows_this_user}
-            return render(request, self.template_name_anon, context)
+            try:
+                Follow.objects.get(user=request.user, followed=user)
+                is_follows_the_user = True
+            except Exception as e:
+                is_follows_the_user = False
+            context = {'user' : user, 'follows_this_user': is_follows_the_user}
+            return render(request, self.template_name_anon, context = context)
 
 class ProfileEditView(View):
     template_name = 'user/profile_edit.html'
@@ -46,7 +48,7 @@ class ProfileEditView(View):
         context = {
             'form': form
         }
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, context = context)
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES, instance = request.user)
@@ -61,7 +63,7 @@ class ProfileEditView(View):
                 form[error].field.widget.attrs['class'] += ' is-invalid'
 
             context = {'form':form}
-            return render(request, self.template_name, context)
+            return render(request, self.template_name, context = context)
 
     
 class AllProfilesView(View):
@@ -78,4 +80,4 @@ class AllProfilesView(View):
             all_profiles = User.objects.none()
         
         context = {'all_profiles': all_profiles}
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, context = context)

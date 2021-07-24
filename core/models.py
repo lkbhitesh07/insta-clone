@@ -13,6 +13,9 @@ class Post(models.Model):
     created_on = models.DateField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created_on']
+
     def __srt__(self):
         return str(self.pk)
 
@@ -23,6 +26,16 @@ class Post(models.Model):
         if not self.pk: # Here we are doing this because until the super method below is not run we will not get any pk because the model is still not created.
             self.user = user # as we have done Post.user ediatable = False , so now from this it will automatically take logedin user.
         super(Post, self).save(*args, **kwargs) #calling Model's save method(means calling save method of parent from child)
+
+    @property
+    def likes_count(self):
+        count = self.like_set.count()
+        return count
+
+    @property
+    def comments_count(self):
+        count = self.comment_set.count()
+        return count
 
 
 class Comment(models.Model):
@@ -47,12 +60,11 @@ class Comment(models.Model):
 class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
-    is_like = models.BooleanField(default=True)
     liked_on = models.DateField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
 
     def __srt__(self):
-        return str(self.is_like)
+        return str(self.post.id)
 
     def save(self, *args, **kwargs):
         user = get_current_user()
@@ -81,3 +93,19 @@ class Follow(models.Model):
         if not self.pk:
             self.user = user
         super(Follow, self).save(*args, **kwargs)
+
+class SavedPost(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
+    saved_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.post.pk)
+
+    def save(self, *args, **kwargs):
+        user = get_current_user()
+        if user and not user.pk:
+            user = None
+        if not self.pk:
+            self.user = user
+        super(SavedPost, self).save(*args, **kwargs)

@@ -42,3 +42,8 @@ class User(AbstractUser):
     def following_count(self):
         count = self.follow_follower.count()
         return count
+
+    @property
+    def posts_count(self):
+        count = self.post_set.count() #relatable name given by django to Post model in User reference
+        return count
