@@ -2,7 +2,7 @@ from django.http import request
 from django.shortcuts import redirect, render
 from django.views.generic.base import TemplateView, View
 from django.contrib.auth import get_user_model
-from core.models import Comment, Follow, Post, Like
+from core.models import Comment, Follow, Post, Like, SavedPost
 from core.forms import PostCreationForm
 
 User = get_user_model()
@@ -45,6 +45,34 @@ class PostDeleteView(View):
 
         return redirect(request.META.get('HTTP_REFERER'))
 
+class PostSaveView(View):
+    def post(self, request, *args, **kwargs):
+        post_id = kwargs.get('id')
+
+        #checking if the post exists
+        try:
+            post_obj = Post.objects.get(pk=post_id)
+        except:
+            pass
+
+        #saving the post
+        try:
+            SavedPost.objects.create(post_id=post_id)
+        except:
+            pass
+        
+        return redirect(request.META.get('HTTP_REFERER'))
+
+class PostUnsaveView(View):
+    def post(self, request, *args, **kwargs):
+        post_id = kwargs.get('id')
+        try:
+            saved_obj = SavedPost.objects.get(user=request.user, post_id=post_id)
+            saved_obj.delete()
+        except:
+            pass
+        return redirect(request.META.get('HTTP_REFERER'))
+
 class PostDetailView(View):
     template_name = 'core/post_detail.html'
     def get(self, request, *args, **kwargs):
@@ -54,13 +82,23 @@ class PostDetailView(View):
         except:
             return redirect(request.META.get('HTTP_REFERER'))
 
+        #checking if the post is liked by the user
         try:
             Like.objects.get(user=request.user, post_id=post_id)
             liked_this_post = True
         except Exception as e:
             liked_this_post = False
 
-        context = {'post': post_obj, 'liked_this_post':liked_this_post}
+        #checking if the post is saved by the user
+        try:
+            SavedPost.objects.get(user=request.user, post_id=post_id)
+            post_saved = True
+        except Exception as e:
+            post_saved = False
+
+        context = {'post': post_obj, 
+            'liked_this_post':liked_this_post,
+            'post_saved':post_saved}
 
         return render(request, self.template_name, context=context)
 
