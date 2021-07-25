@@ -81,8 +81,12 @@ WSGI_APPLICATION = 'insta_clone.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd8rffouhms3a2e',
+        'USER': 'aplgsgrgtulryw',
+        'HOST': 'ec2-52-19-96-181.eu-west-1.compute.amazonaws.com',
+        'PASSWORD': '87fc0e4357f188e5f55cb7a718a8eb3bbc154a73ca6228527519b4949ddec900',
+        'PORT': '5432',
     }
 }
 
