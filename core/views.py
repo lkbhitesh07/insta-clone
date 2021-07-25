@@ -96,9 +96,16 @@ class PostDetailView(View):
         except Exception as e:
             post_saved = False
 
+        # try:
+        #     Comment.objects.get(user=request.user, post_id=post_id)
+        #     comment_delete = True
+        # except Exception as e:
+        #     comment_delete = False
+
         context = {'post': post_obj, 
             'liked_this_post':liked_this_post,
-            'post_saved':post_saved}
+            'post_saved':post_saved,
+            }
 
         return render(request, self.template_name, context=context)
 

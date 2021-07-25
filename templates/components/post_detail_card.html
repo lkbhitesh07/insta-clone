@@ -145,14 +145,15 @@
                         {{ comment.text }}
                     </p>
 
-                    <span class="mx-2">
+                    
+                        <span class="mx-2">
+                            <!-- comment delete button -->
+                            <a data-toggle="modal" data-target="#comment_delete_{{ comment.pk }}" style="cursor: pointer;">
+                                <span class="fa fa-trash"></span>
+                            </a>
+                        </span>
+                  
 
-                        <!-- post delete button -->
-                        <a data-toggle="modal" data-target="#comment_delete_{{ comment.pk }}" style="cursor: pointer;">
-                            <span class="fa fa-trash"></span>
-                        </a>
-                
-                    </span>
                 </div>
             </div>
             <!-- Single Comment end -->
