@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,17 +21,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'j6h%2ydxlppup$s0m_zz5t!ax%sr5llyu00p#5vde6vjvweq3l'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware','whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -122,6 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
 STATICFILES_DIRS = [BASE_DIR/'static_files',]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media' #By defult django has capability to pass static files but for media we have to write logic, this is the logic to have profile picture.
@@ -131,10 +134,12 @@ LOGIN_URL = 'signin_view' # The reason here is we wanted to access feed only if 
 # it will automatically redirect you to authentication page, so django is smart he thought according to his default authentication system it will move you towards
 # this url http://127.0.0.1:8000/accounts/login/?next=/feed/ which will give us 404 error as we want to move user to signin page.
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com' #email service
 EMAIL_HOST_USER = 'lkbhitesh07@gmail.com'
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend' #This backend is use for testing purpose, this will send the email locally and we can save it, this will show us the format.
-EMAIL_FILE_PATH = BASE_DIR / 'emails'
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend' #This backend is use for testing purpose, this will send the email locally and we can save it, this will show us the format.
+# EMAIL_FILE_PATH = BASE_DIR / 'emails'
