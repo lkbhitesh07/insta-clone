@@ -10,7 +10,10 @@ from core.views import (HomeView,
                 PostCommentView,
                 PostCommentDeleteView,
                 PostSaveView,
-                PostUnsaveView
+                PostUnsaveView,
+                ExploredPostsView,
+                LikedPostsView,
+                SavedPostsView
                 )
 from django.contrib.auth.decorators import login_required
 
@@ -29,4 +32,7 @@ urlpatterns = [
     path('post/unlike/<int:id>/', PostUnlikeView.as_view(), name='post_unlike_view'),
     path('post/comment/<int:id>/', PostCommentView.as_view(), name='post_comment_view'),
     path('post/comment/delete/<int:id>/', PostCommentDeleteView.as_view(), name='comment_delete_view'),
+    path('post/liked/', LikedPostsView.as_view(), name='liked_posts_view'),
+    path('post/explored/', ExploredPostsView.as_view(), name='explored_posts_view'),
+    path('post/saved/', SavedPostsView.as_view(), name='posts_saved_view'),
 ]

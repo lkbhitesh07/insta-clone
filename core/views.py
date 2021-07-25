@@ -4,6 +4,7 @@ from django.views.generic.base import TemplateView, View
 from django.contrib.auth import get_user_model
 from core.models import Comment, Follow, Post, Like, SavedPost
 from core.forms import PostCreationForm
+from django.db.models import Count
 
 User = get_user_model()
 
@@ -174,3 +175,20 @@ class UnFollowDoneView(View):
             pass
 
         return redirect(request.META.get('HTTP_REFERER'))
+
+class LikedPostsView(View):
+    template_name = 'core/liked_posts.html'
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+class ExploredPostsView(View):
+    template_name = 'core/posts_explore.html'
+    def get(self, request, *args, **kwargs):
+        all_posts = Post.objects.annotate(count=Count('like')).order_by('-count')
+        context = {'all_posts':all_posts}
+        return render(request, self.template_name, context=context)
+
+class SavedPostsView(View):
+    template_name = 'core/saved_posts.html'
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
