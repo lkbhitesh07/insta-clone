@@ -1,20 +1,18 @@
 from django.urls import path
 from authentication.views import SignUpView, SignInView, SignOutView
 #from authentication.views import PrView, PrCView, PrDView, PrCView
-from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
+from django.contrib.auth.views import (
+            PasswordResetView,
+            PasswordResetConfirmView,
+            PasswordResetDoneView,
+            PasswordResetCompleteView,
+            )
 from authentication.views import PWDchange, PWDchangeDone
 
 urlpatterns = [
     path('', SignInView.as_view(), name='signin_view'),
     path('signup/', SignUpView.as_view(), name='signup_view'),
     path('signout/', SignOutView.as_view(), name='signout_view'),
-    
-    # path('password/reset/', PrView.as_view(), name='password_reset'),#name defined are according to default django.
-    # path('password/reset/confirm/<uidb64>/<token>', PrCView.as_view(), name='password_reset_confirm'),
-    # path('password/reset/done/', PrDView.as_view(), name='password_reset_done'),
-    # path('password/reset/complete/', PrCView.as_view(), name='password_reset_complete'),
-
-    #Method-2 another method from which we can do Password Reset
 
     path('password/reset/', PasswordResetView.as_view(
         email_template_name = 'authentication/password_reset_email.html', #default values we can change to change the template of email
@@ -33,13 +31,13 @@ urlpatterns = [
         template_name = 'authentication/password_reset_complete.html'
     ), name='password_reset_complete'),
 
-    path('password/change/', 
-        PWDchange.as_view(), 
+    path('password/change/',
+        PWDchange.as_view(),
         name='password_change_view'
         ),
-    
-    path('password/change/done/', 
-        PWDchangeDone.as_view(), 
+
+    path('password/change/done/',
+        PWDchangeDone.as_view(),
         name='password_change_done_view'
         ),
 ]

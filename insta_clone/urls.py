@@ -21,13 +21,13 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('authentication.urls')),
-    path('', include('core.urls')),#you can leave multiple url empty here because it will then check the url at apps, now we can't have empty urls in apps
+    path('', include('core.urls')),
     path('', include('user.urls')),
 ]
 
 urlpatterns.extend(
     static(
-        settings.MEDIA_URL, 
+        settings.MEDIA_URL,
         document_root = settings.MEDIA_ROOT
     )
 )

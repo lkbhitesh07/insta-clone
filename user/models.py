@@ -10,6 +10,7 @@ GENDER_CHOICES = [
     ('None', 'Prefer not to say.'),
 ]
 
+# User model
 class User(AbstractUser):
     picture = models.ImageField(upload_to='profile_pictures', null=False, blank=False)
     full_name = models.CharField(max_length=100, help_text='Help people discover your account by using the name you\'re known by: either your full name, nickname, or business name.')
@@ -33,9 +34,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
-    @property #instead of function we can use it as variable value
+    @property
     def followers_count(self):
-        count = self.follow_followed.count() #because we have to count how many times this user has occoured in followed portion
+        count = self.follow_followed.count()
         return count
 
     @property
@@ -45,5 +46,5 @@ class User(AbstractUser):
 
     @property
     def posts_count(self):
-        count = self.post_set.count() #relatable name given by django to Post model in User reference
+        count = self.post_set.count()
         return count
