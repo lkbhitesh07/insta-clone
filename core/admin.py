@@ -1,10 +1,6 @@
 from django.contrib import admin
 from .models import Post, Comment, Like, Follow, SavedPost
 
-# Register your models here.
-
-# we will customize the admin view according to us
-
 class PostModelAdmin(admin.ModelAdmin):
     model = Post
     list_display = ('text', 'image', 'user', 'created_on', 'updated_on')

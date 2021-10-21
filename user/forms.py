@@ -30,7 +30,7 @@ class UserEditForm(forms.ModelForm):
 
         for field in self.fields:
             if field == 'picture':
-                self.fields[field].widget.attrs.update({'class': 'form-control-file'}) #IT will give us the html to which we can apply bootstrap
+                self.fields[field].widget.attrs.update({'class': 'form-control-file'})
             elif field == 'is_private_account':
                 self.fields[field].widget.attrs.update({'class': 'form-check-input'})
             else:

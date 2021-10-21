@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from crum import get_current_user
 
-# Create your models here.
-
 User = get_user_model()
 
 class Post(models.Model):
@@ -24,7 +22,7 @@ class Post(models.Model):
         if user and not user.pk:
             user = None
         if not self.pk:
-            self.user = user # It will help to take automatically loggedin user.
+            self.user = user
         super(Post, self).save(*args, **kwargs)
 
     @property
@@ -75,8 +73,8 @@ class Like(models.Model):
         super(Like, self).save(*args, **kwargs)
 
 class Follow(models.Model):
-    user = models.ForeignKey(User, related_name='follow_follower', on_delete=models.CASCADE, editable=False) #jisne follow kia
-    followed = models.ForeignKey(User, related_name='follow_followed', on_delete=models.CASCADE) #jisko follow kia
+    user = models.ForeignKey(User, related_name='follow_follower', on_delete=models.CASCADE, editable=False)
+    followed = models.ForeignKey(User, related_name='follow_followed', on_delete=models.CASCADE)
     followed_on = models.DateField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
 

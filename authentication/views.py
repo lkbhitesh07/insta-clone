@@ -3,12 +3,12 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.http import HttpResponse
 from authentication.forms import UserForm
-from django.urls import reverse_lazy #will help to generate the url from view name
+from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 
-# Create your views here.
+# All of our views for the endpoints.
 
 User = get_user_model()
 
@@ -33,13 +33,13 @@ class SignInView(View):
         except Exception as e:
             email = email_username
 
-        user = authenticate(request, email=email, password=password) #authenticate function will tell if it's in our database or not.
+        user = authenticate(request, email=email, password=password)
 
         if user is None:
             messages.error(request, 'Invalid username or password', extra_tags="error")
             return render(request, self.template_name)
 
-        login(request, user)# it will directly login the user
+        login(request, user)
         messages.success(request, 'Welcome to instagram', extra_tags="success")
         return redirect('home_feed_view')
 
@@ -70,7 +70,7 @@ class SignOutView(View):
 
 class PWDchange(PasswordChangeView):
     template_name = 'authentication/password_change.html'
-    success_url = reverse_lazy('password_change_done_view') #this will help django to generate url for this view, as we have changed the default value
+    success_url = reverse_lazy('password_change_done_view')
 
 class PWDchangeDone(PasswordChangeDoneView):
     template_name = 'authentication/password_change_done.html'

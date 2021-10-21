@@ -10,8 +10,6 @@ from core.models import Follow
 
 User = get_user_model()
 
-# Create your views here.
-
 class ProfileView(View):
     template_name_auth = 'user/authenticated_profile.html'
     template_name_anon = 'user/anonymous_profile.html'
@@ -44,7 +42,7 @@ class ProfileEditView(View):
         if username != request.user.username:
             return HttpResponse('<h1>This page does not exist</h1>')
 
-        form = self.form_class(instance=request.user) #doing to automatically get the details of logged in user to edit form.
+        form = self.form_class(instance=request.user)
         context = {
             'form': form
         }

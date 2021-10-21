@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from user.managers import CustomUserManager
 
-# Create your models here.
-
 GENDER_CHOICES = [
     ('M', 'Male'),
     ('F', 'Female'),

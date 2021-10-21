@@ -1,6 +1,5 @@
 from django.urls import path
 from authentication.views import SignUpView, SignInView, SignOutView
-#from authentication.views import PrView, PrCView, PrDView, PrCView
 from django.contrib.auth.views import (
             PasswordResetView,
             PasswordResetConfirmView,
@@ -9,15 +8,16 @@ from django.contrib.auth.views import (
             )
 from authentication.views import PWDchange, PWDchangeDone
 
+# These are all the urls endpoint related to authentication and authorization.
 urlpatterns = [
     path('', SignInView.as_view(), name='signin_view'),
     path('signup/', SignUpView.as_view(), name='signup_view'),
     path('signout/', SignOutView.as_view(), name='signout_view'),
 
     path('password/reset/', PasswordResetView.as_view(
-        email_template_name = 'authentication/password_reset_email.html', #default values we can change to change the template of email
+        email_template_name = 'authentication/password_reset_email.html',
         template_name = 'authentication/password_reset.html'
-    ), name='password_reset'), #name are also default that we have to enter.
+    ), name='password_reset'),
 
     path('password/reset/confirm/<uidb64>/<token>', PasswordResetConfirmView.as_view(
         template_name = 'authentication/password_reset_confirm.html'

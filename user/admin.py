@@ -5,8 +5,6 @@ from authentication.forms import UserForm, CustomUserChangeForm
 
 User = get_user_model()
 
-# Register your models here.
-
 # Our custom user admin model
 class CustomUserAdmin(UserAdmin):
     add_form = UserForm

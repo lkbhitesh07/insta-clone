@@ -97,12 +97,6 @@ class PostDetailView(View):
         except Exception as e:
             post_saved = False
 
-        # try:
-        #     Comment.objects.get(user=request.user, post_id=post_id)
-        #     comment_delete = True
-        # except Exception as e:
-        #     comment_delete = False
-
         context = {'post': post_obj, 
             'liked_this_post':liked_this_post,
             'post_saved':post_saved,
@@ -113,8 +107,8 @@ class PostDetailView(View):
 class PostLikeView(View):
     def post(self, request, *args, **kwargs):
         post_id = kwargs.get('id')
-        try:#in case user have already liked the picture
-            Like.objects.get(user=request.user, post_id=post_id) #instead of passing 'post' object we can pass post_id and django will automatically take it.
+        try:
+            Like.objects.get(user=request.user, post_id=post_id)
         except:
             Like.objects.create(user=request.user, post_id=post_id)
         return redirect(request.META.get('HTTP_REFERER'))
@@ -154,20 +148,18 @@ class FollowDoneView(View):
         followed_user_id = request.POST.get('followed_user_id')
         followed_user_obj = User.objects.get(pk=followed_user_id)
 
-        #we don't want to create same entry of same person 'following'
         try:
             Follow.objects.get(user=request.user, followed=followed_user_obj)
         except Exception as e:
             follow_obj = Follow.objects.create(followed=followed_user_obj)
 
-        return redirect(request.META.get('HTTP_REFERER')) #this will refer to the same page from which the post request came.
+        return redirect(request.META.get('HTTP_REFERER'))
 
 class UnFollowDoneView(View):
     def post(self, request, *args, **kwargs):
         unfollowed_user_id = request.POST.get('unfollowed_user_id')
         unfollowed_user_obj = User.objects.get(pk=unfollowed_user_id)
 
-        #we don't want to create same entry of same person following
         try:
             follow_obj = Follow.objects.get(user=request.user, followed=unfollowed_user_obj)
             follow_obj.delete()

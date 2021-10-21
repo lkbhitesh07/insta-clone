@@ -22,7 +22,7 @@ urlpatterns = [
     path('follow/done/', login_required(FollowDoneView.as_view()), name='follow_done_view'),
     path('unfollow/done/', login_required(UnFollowDoneView.as_view()), name='unfollow_done_view'),
 
-    #post related urls
+    # post related urls
     path('post/create/', login_required(PostCreateView.as_view()), name='post_create_view'),
     path('post/delete/<int:id>/', login_required(PostDeleteView.as_view()), name='post_delete_view'),
     path('post/save/<int:id>/', login_required(PostSaveView.as_view()), name='post_save_view'),

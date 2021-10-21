@@ -8,8 +8,13 @@ This is an insta clone project I have made in Django. Some functionalities of th
 6. View others profile
 7. Create a post.
 
+# Codebase overview
+
+Here is the link for the codebase overview doc, here you can find the functionalities, where they are implemented and how they are divided
+### https://docs.google.com/document/d/1gni2OeXgC8ipAo7CLsJroGmn7SqciXEU-ORo7kRcGAQ/edit?usp=sharing
+
 I have used Postgresql database and have deployed it on heroku.
-Link - https://tomarji-insta-clone.herokuapp.com/
+### Link - https://tomarji-insta-clone.herokuapp.com/
 
 # How to setup
 
@@ -30,21 +35,23 @@ Run
 
 All set and you are ready to go.
 
-# This is the login page.
+# Project pages
+
+## This is the login page.
 ![Alt text](/images/login-page.png?raw=true "Title")
 
-# This is home page
+## This is home page
 ![Alt text](/images/home-page-insta.png?raw=true "Title")
 
-# Your post page
+## Your post page
 ![Alt text](/images/post.png?raw=true "Title")
 
-# Our Profile
+## Our Profile
 ![Alt text](/images/our-profile.png?raw=true "Title")
 
-# Anonymous Profile
+## Anonymous Profile
 ![Alt text](/images/anony-profile.png?raw=true "Title")
 
-## Feel free to make your contribution and help me improve this app.
+### Feel free to make your contribution and help me improve this app.
 
 # Thanks
